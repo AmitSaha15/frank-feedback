@@ -9,6 +9,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { signUpSchema } from "@/schemas/signUpSchema"
 import axios, { AxiosError } from 'axios'
 import { ApiResponse } from "@/types/ApiResponse"
+import { useRouter } from "next/navigation"
 
 
 const page = () => {
@@ -19,6 +20,7 @@ const page = () => {
 
   const debouncedUsername = useDebounceValue(username, 300);
   const { toast } = useToast();
+  const router = useRouter();
 
   // zod implementation on form
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -50,6 +52,29 @@ const page = () => {
       }
     }
     checkUniqueUsername();
+    const onSubmit = async (data : z.infer<typeof signUpSchema>) => {
+      setIsSubmitting(true);
+      try {
+        const  response = await axios.post<ApiResponse>('/api/sign-up', data);
+        // console.log(data);
+        toast({
+          title: 'Success',
+          description: response.data.message,
+        })
+        router.replace(`/verify/${username}`);
+        setIsSubmitting(false)
+      } catch (error) {
+        console.error("Error in signup of user", error);
+        const axiosError = error as AxiosError<ApiResponse>;
+        let errorMsg = axiosError.response?.data.message;
+        toast({
+          title: 'Signup failed',
+          description: errorMsg,
+          variant: "destructive"
+        })
+        setIsSubmitting(false);
+      }
+    }
   }, [debouncedUsername])
 
   return (
