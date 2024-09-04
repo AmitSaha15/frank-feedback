@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { useDebounceValue } from 'usehooks-ts'
+import { useDebounceCallback } from 'usehooks-ts'
 import { useToast } from "@/components/ui/use-toast"
 import { signUpSchema } from "@/schemas/signUpSchema"
 import axios, { AxiosError } from 'axios'
@@ -22,7 +22,7 @@ const page = () => {
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const debouncedUsername = useDebounceValue(username, 300);
+  const debounced = useDebounceCallback(setUsername, 300);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -38,11 +38,11 @@ const page = () => {
 
   useEffect(() =>{
     const checkUniqueUsername = async () => {
-      if(debouncedUsername){
+      if(username){
         setIsCheckingUsername(true);
         setUsernameMsg('');
         try {
-          const response = await axios.get(`/api/check-unique-username?username=${debouncedUsername}`);
+          const response = await axios.get(`/api/check-unique-username?username=${username}`);
           // console.log(response);
           setUsernameMsg(response.data.message);
         } catch (error) {
@@ -56,7 +56,7 @@ const page = () => {
       }
     }
     checkUniqueUsername();
-  }, [debouncedUsername])
+  }, [username])
 
   const onSubmit = async (data : z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
@@ -101,7 +101,7 @@ const page = () => {
                   <Input placeholder="Elon Musk" {...field} 
                     onChange={(e) => {
                       field.onChange(e);
-                      setUsername(e.target.value);
+                      debounced(e.target.value);
                     }}
                   />
                 </FormControl>
