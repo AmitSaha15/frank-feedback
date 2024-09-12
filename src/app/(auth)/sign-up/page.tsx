@@ -43,7 +43,7 @@ const page = () => {
         setUsernameMsg('');
         try {
           const response = await axios.get(`/api/check-unique-username?username=${username}`);
-          // console.log(response);
+          // console.log(response.data.message);
           setUsernameMsg(response.data.message);
         } catch (error) {
           const axiosError = error as AxiosError<ApiResponse>;
@@ -106,6 +106,9 @@ const page = () => {
                   />
                 </FormControl>
                 {isCheckingUsername && <Loader2 className="animate-spin"/>}
+                <p className={`text-sm ${usernameMsg === 'Username is available' ? ' text-green-500' : 'text-red-500'}`}>
+                  {usernameMsg}
+                </p>
                 <FormDescription>
                   This is your public display name.
                 </FormDescription>
