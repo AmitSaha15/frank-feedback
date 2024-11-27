@@ -1,0 +1,22 @@
+[
+    {
+      "title": "Message from User123",
+      "content": "Great coffee and cozy atmosphere! The staff is friendly, but the service can be a bit slow during peak hours.",
+      "received": "10 minutes ago"
+    },
+    {
+      "title": "Message from SecretAdmirer",
+      "content": "I really liked your recent course on Full Stack Development!",
+      "received": "2 hours ago"
+    },
+    {
+        "title": "Message from GuestCustomer",
+        "content": "Delivery is usually fast, but twice my package arrived late without an update. Better tracking would improve the experience.",
+        "received": "5 hours ago"
+    },
+    {
+      "title": "Message from MysteryGuest",
+      "content": "The equipment is decent, but the gym is overcrowded in the evenings, and the locker rooms need more regular cleaning.",
+      "received": "1 day ago"
+    }
+  ]
