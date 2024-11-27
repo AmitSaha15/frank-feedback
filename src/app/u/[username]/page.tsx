@@ -143,7 +143,7 @@ export default function SendMessage() {
           >
             Suggest Messages
           </Button>
-          <p>Click on any message below to select it.</p>
+          <p>Click on any message below to select it.(This feature is currently unavailable)</p>
         </div>
         <Card>
           <CardHeader>
