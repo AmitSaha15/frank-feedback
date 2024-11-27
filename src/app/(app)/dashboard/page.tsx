@@ -54,7 +54,7 @@ const dashboard = () => {
       setIsSwitchLoading(false);
     }
 
-  }, [setValue])
+  }, [setValue,toast])
 
   const fetchMessages = useCallback(async (refresh : boolean = false) => {
     setIsLoading(true);
@@ -80,13 +80,13 @@ const dashboard = () => {
       setIsLoading(false);
       setIsSwitchLoading(false);
     }
-  }, [setIsLoading, setMessages])
+  }, [setIsLoading, setMessages, toast])
 
   useEffect(() => {
     if(!session || !session.user) return;
     fetchMessages();
     fetchAcceptMessages();
-  },[session, setValue, fetchAcceptMessages, fetchMessages])
+  },[session, setValue, fetchAcceptMessages, fetchMessages, toast])
 
   const handleSwitchChange = async () => {
     try {
@@ -111,7 +111,11 @@ const dashboard = () => {
     }
   }
 
-  const {username} = session?.user as User
+  if (!session || !session.user) {
+    return <div>Please login/singup.</div>;
+  }
+
+  const {username} = session.user as User
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${username}`;
 
@@ -123,9 +127,6 @@ const dashboard = () => {
     })
   }
 
-  if(!session || !session.user){
-    return <div>Please login.</div>
-  }
   
   return (
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
